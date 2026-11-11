@@ -1,0 +1,305 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Circuit | Joule Heating</title><style>
+:root{--ink:#163448;--muted:#486171;--line:#d6e0e5;--paper:#fff;--soft:#f1f6f8;--blue:#146b9c;--heat:#b94e17}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 Arial,sans-serif}a{color:var(--blue);text-underline-offset:4px}header{position:sticky;top:0;z-index:5;background:#fffffff5;border-bottom:1px solid var(--line);padding:15px 5%;display:flex;align-items:center;justify-content:space-between;gap:18px}header b{letter-spacing:.03em;font-size:14px}nav{display:flex;gap:18px;flex-wrap:wrap}nav a{font-size:14px;text-decoration:none}main{max-width:1120px;margin:auto;padding:0 28px}.hero{padding:64px 0 42px;max-width:850px}.eyebrow{text-transform:uppercase;letter-spacing:.15em;font-size:12px;color:var(--blue);font-weight:700}h1{font-size:clamp(34px,5.5vw,58px);line-height:1.08;letter-spacing:-.035em;max-width:750px;margin:14px 0 22px;font-weight:600}h2{font-size:29px;line-height:1.2;letter-spacing:-.02em;margin:0 0 18px}h3{font-size:19px;margin:0 0 8px}p{margin:0 0 16px}.lead{font-size:20px;line-height:1.55;color:var(--muted);max-width:750px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.button,button{font:600 14px Arial,sans-serif;padding:12px 17px;border:1px solid #9ab2c0;border-radius:5px;color:var(--ink);background:white;text-decoration:none;cursor:pointer}.primary,button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #e4a854;outline-offset:4px}.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:24px 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.overview strong{display:block;font-size:18px}.overview span{color:var(--muted);font-size:14px}.num{color:var(--blue);font-size:12px;letter-spacing:.1em;margin-bottom:5px}.section{padding:46px 0;border-bottom:1px solid var(--line)}.intro{color:var(--muted);max-width:780px}.split{display:grid;grid-template-columns:1fr 1fr;gap:36px}.note{border-left:3px solid var(--blue);background:var(--soft);padding:16px 20px;margin:20px 0}.note p:last-child{margin:0}details{border-top:1px solid var(--line)}details:last-child{border-bottom:1px solid var(--line)}summary{cursor:pointer;padding:16px 0;font-weight:600;line-height:1.5}details p{padding:0 0 12px;margin:0;color:var(--muted)}summary span{display:inline-block;font-weight:400;color:var(--muted);margin-left:7px}.play{background:var(--soft);padding:24px}.controls{display:flex;gap:8px;flex-wrap:wrap}.states{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:24px 0 12px}.states span{display:block;font-size:13px;color:var(--muted)}.states b{font-size:21px}.led{display:inline-block;width:13px;height:13px;border-radius:50%;background:#7b8790;margin-right:5px;vertical-align:middle}.led.on{background:#d93e23;box-shadow:0 0 0 4px #d93e2322}.wirepath{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin:20px 0}.wirepath b{font-size:14px;font-weight:400;padding:5px 9px;background:var(--paper)}.wirepath span{color:var(--muted)}.wirepath.active b{color:var(--blue);font-weight:600}.small{font-size:13px;color:var(--muted)}.step{display:grid;grid-template-columns:44px 1fr;gap:16px;padding:23px 0;border-top:1px solid var(--line)}.step>span{font-size:23px;color:var(--blue)}.step p,.step ul{margin:8px 0 0;color:var(--muted)}ul{padding-left:21px}li{margin:5px 0}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:15px}th,td{text-align:left;padding:13px 10px;vertical-align:top;border-bottom:1px solid var(--line)}th{background:var(--soft);font-size:13px}th:first-child,td:first-child{padding-left:12px}.formula{font-size:19px;padding:18px 0;font-weight:600}.questions{display:grid;grid-template-columns:1fr 1fr;gap:24px}.questions p{color:var(--muted)}footer{max-width:1120px;margin:auto;padding:26px 28px 40px;font-size:13px;color:var(--muted)}.print{margin-left:8px}@media(max-width:700px){header{position:static;align-items:flex-start;flex-direction:column}main{padding:0 20px}.hero{padding-top:35px}.overview{grid-template-columns:1fr 1fr;gap:20px}.split,.questions{grid-template-columns:1fr;gap:20px}.states{gap:10px}.states b{font-size:17px}.play{padding:18px}.section{padding:32px 0}summary span{display:block;margin-left:0}.step{gap:8px;grid-template-columns:34px 1fr}}@media print{header{position:static}nav,.actions,.controls,.print{display:none}.hero{padding:20px 0}.section{padding:24px 0}details p{display:block!important}h2,h3{break-after:avoid}.step,.play,table{break-inside:avoid}body{font-size:11pt}.small{font-size:9pt}a{color:inherit;text-decoration:none}}
+
+header{padding:16px max(24px,calc((100vw - 1120px)/2));border-top:4px solid #163448}header a.brand{font:600 16px Arial;color:#163448;text-decoration:none;white-space:nowrap}nav a[aria-current=page]{color:#163448;font-weight:700;text-decoration:underline;text-underline-offset:6px}main{max-width:1176px}.home-hero{display:grid;grid-template-columns:1fr 1.15fr;gap:25px;align-items:center;padding:56px 0 42px}.home-hero h1{font-size:clamp(34px,4.2vw,54px)}.home-hero .lead{font-size:18px}.home-hero figure{margin:0;background:#f8fafc}.home-hero img{width:100%;display:block}.home-hero figcaption{font-size:12px;color:#486171;padding:12px 16px;background:white}.module-list{border-top:1px solid #c8d7df}.module-link{display:grid;grid-template-columns:50px 1fr 35px;gap:20px;align-items:center;padding:24px 6px;text-decoration:none;color:#163448;border-bottom:1px solid #c8d7df}.module-link:hover{background:#f1f6f8}.module-link .n{font-size:13px;color:#146b9c}.module-link strong{font-size:21px;display:block;font-weight:600}.module-link p{color:#486171;margin:5px 0 0;font-size:15px}.module-link .arrow{font-size:26px;text-align:right}.breadcrumb{padding-top:24px;font-size:13px}.section>h1{font-size:40px;max-width:850px;margin:12px 0 24px}.module-foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:28px 0}.stepnav{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}.stepnav button{padding:9px 14px}.step[hidden]{display:none}.step{min-height:180px}.schematic-scroll{overflow-x:auto;background:white;margin-top:24px;border-bottom:1px solid #d6e0e5}#circuit{width:100%;min-width:650px;display:block}#circuit .control-wire,#circuit .power-wire{transition:stroke .15s}#circuit.gate-on .control-wire{stroke:#8e580b;stroke-width:3}#circuit.gate-on #led-shape{stroke:#bd491c;fill:#f6d9cc}#circuit.gate-on #channel{stroke:#146b9c;stroke-width:4;stroke-dasharray:none}#circuit.heating .power-wire{stroke:#146b9c;stroke-width:3}.sample-option{display:flex;align-items:center;gap:8px;font-size:14px}.signal-results{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:22px 0}.signal-results span{display:block;font-size:13px;color:#486171}.signal-results strong{font-size:20px}.module-title{padding:12px 0 0}.next{font-weight:600}footer{border-top:1px solid #d6e0e5;margin-top:15px}.controls button[aria-pressed=true],.stepnav button[aria-pressed=true]{background:#163448;color:white}.page-intro{padding:42px 0 12px}.page-intro h1{font-size:40px;max-width:850px}.page-intro p{max-width:780px;color:#486171}.section{border-bottom:0}.mobilehint{display:none}@media(max-width:780px){header{padding:14px 20px}.home-hero{grid-template-columns:1fr;padding-top:30px;gap:16px}.home-hero figure{grid-row:2}.home-hero h1{max-width:650px}.module-link{gap:10px;grid-template-columns:32px 1fr 22px}.signal-results{grid-template-columns:1fr 1fr}.page-intro h1,.section>h1{font-size:32px}.mobilehint{display:block}}@media print{.step[hidden]{display:grid!important}.stepnav,.controls,.module-foot{display:none}.home-hero{grid-template-columns:1fr 1fr}.schematic-scroll{overflow:visible}#circuit{min-width:0}}
+</style><link rel="stylesheet" href="experience.css">
+<link rel="stylesheet" href="circuit.css">
+</head><body><header><a class="brand" href="Joule HeatingWebiste.html">JOULE HEATING / PDES</a><nav aria-label="Main navigation"><a href="Joule HeatingWebiste.html">Home</a><a href="components.html">Components</a><a href="procedure.html">Procedure</a><a href="schematic.html" aria-current="page">Circuit</a><a href="measurements.html">Measurements</a><a href="data.html">Data</a></nav></header><main><div class="breadcrumb"><a href="Joule HeatingWebiste.html">Home</a> / Module 03</div>
+
+<section class="section">
+<div class="eyebrow">Module 03 / The circuit</div>
+<h1>One power source.<br>One controlled switch.</h1>
+<p class="lead">A MOSFET-controlled circuit sends periodic current through the liquid-metal coating, so the PDES sample heats and cools in repeated cycles. The DC supply provides the energy, and the function generator decides when the MOSFET lets it through.</p>
+<div class="spec-strip">
+<span class="spec-chip"><b>V1</b>2 V DC nominal · 1.5–2.0 V in use</span>
+<span class="spec-chip"><b>R1</b>Coating ≈ 1 Ω</span>
+<span class="spec-chip"><b>R2</b>Thin wire ≈ 1 Ω</span>
+<span class="spec-chip"><b>Q1</b>IRLZ44NPBF</span>
+<span class="spec-chip"><b>VG</b>0–5 V square wave</span>
+<span class="spec-chip"><b>TARGET</b>0.7–1.0 A</span>
+<span class="spec-chip warn"><b>MAX</b>2 A</span>
+</div>
+
+<div class="lab">
+<div class="card" id="schem-card">
+<div class="card-head"><h3>Live circuit</h3><span class="tag">Click any component</span></div>
+<div class="schem-wrap">
+<svg id="schem" viewBox="0 0 900 640" role="img" aria-label="PDES Joule heating circuit. The DC supply V1 drives current through R1, the liquid-metal coating, and R2, the thin hanging wire, into the drain of MOSFET Q1, whose source returns to the supply through the common return. The function generator VG drives the MOSFET gate and, in parallel, the red LED D1 in series with the 6 kilo-ohm resistor R3. Test points TP1 on the gate and TP2 on the drain are for the oscilloscope.">
+<defs>
+<radialGradient id="ledGrad"><stop offset="0" stop-color="#ff5a3c" stop-opacity=".75"/><stop offset="1" stop-color="#ff5a3c" stop-opacity="0"/></radialGradient>
+<filter id="heatBlur" x="-50%" y="-20%" width="200%" height="140%"><feGaussianBlur stdDeviation="5"/></filter>
+<marker id="rayHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/></marker>
+</defs>
+
+<!-- highlight underlays (current paths) -->
+<path class="flow power" d="M820,286 V50 H560 V590 H820 V354"/>
+<path class="flow gate" d="M330,483 V437 H533"/>
+<path class="flow led" d="M330,483 V437 H180 V590 H330 V547"/>
+
+<!-- wires -->
+<path class="wire" data-paths="power" d="M560,90 V50 H820 V286"/>
+<path class="wire" data-paths="power" d="M560,190 V230"/>
+<path class="wire" data-paths="power" d="M560,330 V357"/>
+<path class="wire" data-paths="power" d="M560,367 V405 H545"/>
+<path class="wire" data-paths="power" d="M545,437 H560 V469"/>
+<path class="wire" data-paths="power ret" d="M545,469 H560 V590"/>
+<path class="wire" data-paths="power ret" d="M820,354 V590 H560"/>
+<path class="wire" data-paths="ret" d="M560,590 H330"/>
+<path class="wire" data-paths="led" d="M330,590 H180 V560"/>
+<path class="wire" data-paths="gate" d="M533,437 H445"/>
+<path class="wire" data-paths="gate" d="M435,437 H330"/>
+<path class="wire" data-paths="gate led" d="M330,437 V483"/>
+<path class="wire" data-paths="gate led ret" d="M330,547 V590"/>
+<path class="wire" data-paths="led" d="M330,437 H180 V458"/>
+<path class="wire" data-paths="led" d="M180,482 V500"/>
+<circle class="node" data-paths="gate led" cx="330" cy="437" r="4.5"/>
+<circle class="node" data-paths="led ret" cx="330" cy="590" r="4.5"/>
+<circle class="node" data-paths="power ret" cx="560" cy="590" r="4.5"/>
+
+<!-- open circuit marker (sample disconnected) -->
+<g id="open-gap"><rect x="546" y="58" width="28" height="24" fill="var(--surface)"/><path class="sym" d="M552,64 l16,12 M568,64 l-16,12" style="stroke:#dc2626"/><text x="580" y="75" style="fill:#dc2626;font-weight:700;font-size:12px">OPEN</text></g>
+
+<!-- R1 liquid-metal coating -->
+<g class="part" data-part="r1" data-paths="power" tabindex="0" role="button" aria-label="R1, liquid-metal coating">
+<rect class="hit" x="532" y="84" width="270" height="112" rx="10"/>
+<path id="r1-heat" d="M560,90 l0,8 l-14,7 l28,14 l-28,14 l28,14 l-28,14 l28,14 l-14,7 l0,8" fill="none" stroke="var(--heat)" stroke-width="10" stroke-linejoin="round" filter="url(#heatBlur)" opacity="0"/>
+<path class="sym" id="r1-sym" d="M560,90 l0,8 l-14,7 l28,14 l-28,14 l28,14 l-28,14 l28,14 l-14,7 l0,8"/>
+<text class="lbl" x="598" y="128">R1  Liquid-metal coating</text>
+<text class="sub" x="598" y="148" id="r1-sub">1.00 Ω nominal · coating + contacts</text>
+</g>
+
+<!-- R2 thin hanging wire -->
+<g class="part" data-part="r2" data-paths="power" tabindex="0" role="button" aria-label="R2, thin hanging wire">
+<rect class="hit" x="532" y="224" width="270" height="112" rx="10"/>
+<path class="sym" d="M560,230 l0,8 l-14,7 l28,14 l-28,14 l28,14 l-28,14 l28,14 l-14,7 l0,8"/>
+<text class="lbl" x="598" y="268">R2  Thin hanging wire</text>
+<text class="sub" x="598" y="288" id="r2-sub">1.00 Ω nominal</text>
+</g>
+
+<!-- TP2 drain -->
+<g class="part" data-part="tp2" data-paths="power" tabindex="0" role="button" aria-label="TP2, drain test point">
+<rect class="hit" x="400" y="340" width="176" height="36" rx="8"/>
+<circle class="tpc" cx="560" cy="362" r="5.5"/>
+<text class="tp" x="545" y="366" text-anchor="end">TP2 · DRAIN · CH2</text>
+</g>
+
+<!-- Q1 MOSFET -->
+<g class="part" data-part="q1" data-paths="power gate ret" tabindex="0" role="button" aria-label="Q1, IRLZ44NPBF N-channel MOSFET">
+<rect class="hit" x="508" y="388" width="250" height="104" rx="10"/>
+<path class="sym" d="M545,397 V413 M545,429 V445 M545,461 V477"/>
+<path class="sym" id="ch-on" d="M545,397 V477" style="stroke:var(--heat-2);stroke-width:4"/>
+<path class="sym" d="M533,400 V474"/>
+<polygon class="fillsym" points="547,437 557,431 557,443"/>
+<text class="pin" x="572" y="402">D</text>
+<text class="pin" x="524" y="430" text-anchor="end">G</text>
+<text class="pin" x="572" y="484">S</text>
+<text class="lbl" x="598" y="432">Q1  IRLZ44NPBF</text>
+<text class="sub" x="598" y="452">N-channel MOSFET</text>
+<text class="vlabel" x="598" y="472" id="q1-state" style="fill:var(--muted)">OFF · open</text>
+</g>
+
+<!-- TP1 gate -->
+<g class="part" data-part="tp1" data-paths="gate" tabindex="0" role="button" aria-label="TP1, gate test point">
+<rect class="hit" x="380" y="404" width="120" height="44" rx="8"/>
+<circle class="tpc" cx="440" cy="437" r="5.5"/>
+<text class="tp" x="440" y="420" text-anchor="middle">TP1 · GATE · CH1</text>
+</g>
+
+<!-- VG function generator -->
+<g class="part" data-part="vg" data-paths="gate led ret" tabindex="0" role="button" aria-label="VG, function generator">
+<rect class="hit" x="290" y="474" width="300" height="82" rx="10"/>
+<circle class="bodyfill" cx="330" cy="515" r="32"/>
+<path class="wave" d="M310,524 h7 v-18 h13 v18 h13 v-18 h7"/>
+<text class="lbl" x="374" y="510">VG  Function generator</text>
+<text class="sub" x="374" y="530" id="vg-sub">0–5 V square wave</text>
+<text class="vlabel" x="374" y="548" id="vg-state" style="fill:var(--muted)">LOW · 0 V</text>
+</g>
+
+<!-- D1 LED -->
+<g class="part" data-part="led" data-paths="led" tabindex="0" role="button" aria-label="D1, red LED LTL-307EE">
+<rect class="hit" x="28" y="446" width="200" height="46" rx="10"/>
+<circle id="led-glow" cx="180" cy="470" r="30" fill="url(#ledGrad)"/>
+<polygon id="led-body" points="166,458 194,458 180,482" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round"/>
+<path class="sym" d="M166,482 H194"/>
+<path class="ray" d="M198,462 l14,-9" stroke="#ef4444" stroke-width="2" marker-end="url(#rayHead)"/>
+<path class="ray" d="M200,474 l14,-9" stroke="#ef4444" stroke-width="2" marker-end="url(#rayHead)"/>
+<text class="lbl" x="36" y="466">D1  Red LED</text>
+<text class="sub" x="36" y="484">LTL-307EE</text>
+</g>
+
+<!-- R3 6 kohm -->
+<g class="part" data-part="r3" data-paths="led" tabindex="0" role="button" aria-label="R3, 6 kilo-ohm resistor">
+<rect class="hit" x="28" y="496" width="200" height="68" rx="10"/>
+<path class="sym" d="M180,500 l0,6 l-10,5 l20,10 l-20,10 l20,10 l-20,10 l10,5 l0,4"/>
+<text class="lbl" x="36" y="535">R3  6 kΩ</text>
+</g>
+
+<!-- V1 DC supply -->
+<g class="part" data-part="v1" data-paths="power ret" tabindex="0" role="button" aria-label="V1, DC power supply">
+<rect class="hit" x="776" y="270" width="118" height="100" rx="10"/>
+<circle class="bodyfill" cx="820" cy="320" r="34"/>
+<path class="sym" d="M820,297 v16 M812,305 h16 M812,337 h16"/>
+<text class="lbl" x="862" y="316">V1</text>
+<text class="sub" x="862" y="336" id="v1-sub">2.00 V</text>
+</g>
+
+<!-- Common return -->
+<g class="part" data-part="ret" data-paths="ret" tabindex="0" role="button" aria-label="Common return">
+<rect class="hit" x="534" y="594" width="230" height="40" rx="8"/>
+<path class="sym" d="M560,590 V606 M544,606 H576 M550,614 H570 M556,622 H564"/>
+<text class="lbl" x="590" y="618" style="font-size:12.5px;letter-spacing:.06em">COMMON RETURN</text>
+</g>
+
+<g id="dots"></g>
+</svg>
+</div>
+<div class="part-info" id="part-info" aria-live="polite"></div>
+</div>
+
+<div class="card">
+<div class="panel ctrls">
+<h4>Function generator</h4>
+<div class="seg" role="group" aria-label="Generator mode"><button type="button" id="mode-auto" aria-pressed="true">Auto cycle</button><button type="button" id="mode-low" aria-pressed="false">LOW · 0 V</button><button type="button" id="mode-high" aria-pressed="false">HIGH · 5 V</button></div>
+<div class="ctrl"><label for="freq">Frequency <output id="freq-out">0.5 Hz</output></label><select id="freq"><option value="0.25">0.25 Hz (slow, easy to watch)</option><option value="0.5" selected>0.5 Hz</option><option value="1">1 Hz (as on the schematic)</option></select></div>
+<div class="ctrl"><label for="duty">Duty cycle <output id="duty-out">50%</output></label><input type="range" id="duty" min="10" max="90" step="5" value="50"></div>
+</div>
+<div class="panel ctrls">
+<h4>Circuit values</h4>
+<div class="ctrl"><label for="volt">V1 supply voltage <output id="volt-out">2.00 V</output></label><input type="range" id="volt" min="0.5" max="4" step="0.05" value="2"></div>
+<div class="ctrl"><label for="r1">R1 coating resistance <output id="r1-out">1.00 Ω</output></label><input type="range" id="r1" min="0.3" max="4" step="0.05" value="1"></div>
+<div class="ctrl"><label for="r2">R2 thin-wire resistance <output id="r2-out">1.00 Ω</output></label><input type="range" id="r2" min="0.3" max="2" step="0.05" value="1"></div>
+<label class="check"><input type="checkbox" id="connected" checked> Sample connected</label>
+</div>
+<div class="panel">
+<h4>Readouts</h4>
+<div class="readouts">
+<div class="ro"><span>Gate V<sub>GS</sub></span><strong id="ro-gate">0 V</strong></div>
+<div class="ro"><span>Indicator LED</span><strong id="ro-led">Off</strong></div>
+<div class="ro" id="ro-i-box"><span>Heating current</span><strong id="ro-i">0 A</strong></div>
+<div class="ro"><span>Drain V<sub>DS</sub></span><strong id="ro-vds">2.00 V</strong></div>
+<div class="ro"><span>Coating power</span><strong id="ro-p1">0 W</strong></div>
+<div class="ro"><span>Wire power</span><strong id="ro-p2">0 W</strong></div>
+</div>
+<div class="status" id="status"></div>
+<p class="small" style="margin:12px 0 0">Current = V1 ÷ (R1 + R2 + MOSFET on-resistance ≈ 0.025 Ω). Values are calculated, not measured.</p>
+</div>
+</div>
+</div>
+
+<div class="card scope" id="scope-card">
+<div class="card-head"><h3>Simulated oscilloscope</h3><div class="scope-legend"><span><i style="background:#f5c542"></i>CH1 · TP1 gate</span><span><i style="background:#3fd0e0"></i>CH2 · TP2 drain</span><span><i style="background:#ff8a5b"></i>Coating temperature (illustrative)</span></div></div>
+<canvas id="scope" aria-label="Simulated oscilloscope traces of the gate and drain voltages"></canvas>
+</div>
+
+<div class="card pdf-link"><p><strong>Source schematic.</strong> Figure 1, PDES Joule Heating Circuit: MOSFET-switched resistive heating with optical synchronization. Source: Anthony Honeine, HAND_Anthony.pptx, slide 5; test-point labels added for measurement reference.</p><a class="button" href="PDES_Joule_Heating_Circuit.pdf" target="_blank" rel="noopener">Open the schematic PDF ↗</a><button type="button" data-print>Print this page</button></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">Guided tour</div>
+<h2>Trace each path through the circuit.</h2>
+<p class="intro">The circuit has three paths that meet at one shared reference. Pick a path to highlight it on the live schematic above.</p>
+<div class="tour">
+<div class="tour-nav" id="tour-nav">
+<button type="button" data-tour="0"><span><small>PATH 1</small>Heating loop</span></button>
+<button type="button" data-tour="1"><span><small>PATH 2</small>Gate control</span></button>
+<button type="button" data-tour="2"><span><small>PATH 3</small>LED branch</span></button>
+<button type="button" data-tour="3"><span><small>SHARED</small>Common return</span></button>
+<button type="button" id="tour-clear"><span><small>RESET</small>Show everything</span></button>
+</div>
+<div class="card tour-body"><h3 id="tour-title"></h3><p id="tour-text"></p><div class="chain" id="tour-chain"></div></div>
+</div>
+</section>
+
+<section class="section">
+<div class="eyebrow">Component reference</div>
+<h2>What every part does.</h2>
+<p class="intro">Each card summarizes the protocol’s description of that component. Use “Show on schematic” to jump to it in the live circuit.</p>
+<div class="parts-grid" id="parts-grid"></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">Complete operating cycle</div>
+<h2>Fast switching, slow response.</h2>
+<p class="intro">The electrical switching happens almost instantly, but heating, cooling and the resulting movement take much longer. Repeating the two intervals below produces cyclic actuation.</p>
+<div class="cycle-row">
+<div class="card phase"><h3>High: heating</h3><p>Current flows from the supply’s positive terminal through the coated sample, through the thin wire and through the conducting MOSFET to the negative terminal. Resistive heating raises the sample’s temperature and drives the contraction.</p></div>
+<div class="card phase cool"><h3>Low: cooling</h3><p>The MOSFET interrupts the current and electrical heating stops. The sample cools passively and stretches back out under the hanging load, more slowly than the switch turned off.</p></div>
+</div>
+<div class="card duty-demo"><div class="duty-bar"><div class="h" id="duty-h">HEAT 50%</div><div class="c" id="duty-c">COOL 50%</div><div class="playhead" id="playhead"></div></div><p class="small" id="duty-text" style="margin:12px 0 0">At 0.5 Hz and 50% duty, each 2 s cycle has 1 s of heating followed by 1 s of cooling. The playhead follows the live circuit above.</p></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">Operating requirements</div>
+<h2>Rules for working on the circuit.</h2>
+<div class="note"><strong>Power off for wiring and resistance.</strong><p>Make every wiring change and every resistance measurement with the DC supply output and the function generator both disabled. Disconnect power before switching the multimeter to resistance mode, and never leave it in resistance mode while the circuit is energized.</p></div>
+<div class="note"><strong>Stay in the current window.</strong><p>Run the actuator at a target current of 0.7–1.0 A and never exceed 2 A. Set the supply’s current limit before enabling its output.</p></div>
+<div class="note"><strong>Keep one shared reference.</strong><p>The generator return, the MOSFET source and the supply negative terminal must all connect to the common return. Verify every connection before mounting the sample.</p></div>
+
+<h3>Bring-up checklist</h3>
+<p class="group-label">Thin-wire resistance · power disconnected</p>
+<ol class="checklist">
+<li>Measure the resistance between the thin wire’s end connections.</li>
+<li>For a new wire, scrape the insulating coating off the connection points first.<small>Without this the wire won’t make electrical contact.</small></li>
+<li>Move the wire gently while watching the reading. It should vary by no more than 0.1 Ω.</li>
+<li>Record the wire resistance (about 1 Ω in the original setup).</li>
+</ol>
+<p class="group-label">Function generator</p>
+<ol class="checklist">
+<li>Set a square wave alternating between 0 and 5 V.</li>
+<li>Choose the fixed frequency or frequency sweep, and record the frequency, duty cycle and test duration.</li>
+<li>Apply a 180° phase offset (original WaveForms setup) and check that the output stays at 0 V while disabled.</li>
+<li>With no sample connected, enable the generator briefly and confirm the LED follows the signal. Then disable it.</li>
+</ol>
+<p class="group-label">DC supply</p>
+<ol class="checklist">
+<li>Set the current limit according to the operating requirements.</li>
+<li>Set an initial voltage between 1.5 and 2.0 V.<small>You’ll fine-tune it during operation to reach 0.7–1.0 A.</small></li>
+<li>With the sample disconnected and the gate signal disabled, enable the output briefly and check the current reads about zero.</li>
+<li>Disable the output before mounting the sample.</li>
+</ol>
+<p class="group-label">After mounting · power disconnected</p>
+<ol class="checklist">
+<li>Measure the combined resistance of the thin wire and the coated-sample connection.</li>
+<li>Adjust the coating and contacts until the reading is stable and within 1.9–2.1 Ω.</li>
+<li>Record the total, then calculate R<sub>connection</sub> = R<sub>series</sub> − R<sub>wire</sub>.<small>This includes the liquid-metal coating and its contact resistance.</small></li>
+<li>Disconnect the multimeter, or switch it to voltage mode, before enabling the supply.</li>
+</ol>
+<p class="group-label">Start of the run</p>
+<ol class="checklist">
+<li>Enable the DC supply with the function generator still disabled, and confirm the sample current stays near zero.</li>
+<li>Start recording, wait about 5 s, then enable the generator.</li>
+<li>Confirm cycling from the LED and the sample’s motion, and check the current stays in range.</li>
+<li>Afterwards, let the sample cool and, with power disconnected, measure the connection resistance again.</li>
+</ol>
+</section>
+
+<section class="section">
+<div class="eyebrow">Measuring current</div>
+<h2>What the supply display can and can’t tell you.</h2>
+<p class="intro">The power supply’s display is an operating check. Its update rate and internal averaging mean it can’t follow the current waveform during fast switching, so the value it shows can be distorted.</p>
+<div class="note"><strong>Use a 0.1 Hz reference reading.</strong><p>The original protocol runs a separate 0.1 Hz cycle before higher-frequency tests to get the on-state current. Record it as a reference measurement, note the frequency it was taken at, and don’t report it as the current waveform of the faster experiment.</p></div>
+<p>For a time-resolved current measurement, use a suitable current probe, or measure the voltage across a calibrated series resistance with appropriate differential instrumentation. A sustained drop in current during a run means the total circuit resistance has changed, and the conductive path should be inspected.</p>
+
+<h3>Optional: oscilloscope check</h3>
+<p>Oscilloscope measurements supplement the original procedure. If you use one, record the probe configuration and acquisition settings with the experiment.</p>
+<div class="table-wrap"><table><thead><tr><th>Channel</th><th>Probe tip</th><th>Ground clip</th><th>What you see</th></tr></thead><tbody><tr><td>CH1</td><td>TP1 · gate</td><td>Common return</td><td>The applied 0–5 V control waveform</td></tr><tr><td>CH2</td><td>TP2 · drain</td><td>Common return</td><td>Falls during conduction; rises toward the supply voltage when the MOSFET turns off</td></tr></tbody></table></div>
+<div class="note"><strong>Both ground clips go to the common return.</strong><p>Never put a grounded probe clip on the drain or the supply positive; that can short part of the circuit through the oscilloscope. Check your instrument’s grounding configuration first.</p></div>
+</section>
+
+<section class="section">
+<div class="eyebrow">Interpreting electrical changes</div>
+<h2>Why a rising coating resistance can increase heating.</h2>
+<p class="intro">Changes in coating or contact resistance change both the current and how the heating is shared around the circuit. At a fixed supply voltage, the power in the coating is:</p>
+<div class="formula">P<sub>coating</sub> = V² · R<sub>coating</sub> / (R<sub>coating</sub> + R<sub>remaining</sub>)²</div>
+<div class="ptx">
+<div class="card"><div class="card-head"><h3>Coating power vs. coating resistance</h3><span class="tag" id="ptx-tag">V = 2.00 V</span></div><canvas id="ptx" aria-label="Chart of coating power against coating resistance"></canvas></div>
+<div class="card"><div class="panel">
+<div class="ctrl" style="margin-top:0"><label for="rrem"><span>R<sub>remaining</sub> (rest of the circuit)</span> <output id="rrem-out">1.00 Ω</output></label><input type="range" id="rrem" min="0.3" max="3" step="0.05" value="1"></div>
+<p style="margin-top:14px">R<sub>remaining</sub> is everything else in series: mainly the thin wire, plus the MOSFET and leads. Coating power <strong>rises</strong> with coating resistance while R<sub>coating</sub> is below R<sub>remaining</sub>, <strong>peaks</strong> when they’re equal, and <strong>falls</strong> as R<sub>coating</sub> keeps rising.</p>
+<p>The orange dot is the R1 value set in the live circuit. Record resistance changes and use measured electrical values when interpreting actuator performance.</p>
+</div></div>
+</div>
+</section>
+
+<div class="module-foot"><a href="procedure.html">← Procedure</a><a class="next" href="measurements.html">Measurements →</a></div></main><footer>A learning guide based on the lab’s Joule heating protocol. Use the settings for your specific study, and check instrument grounding before connecting anything.<br>The 3D model and switching demonstrations are illustrations, not experimental measurements.</footer><script>document.querySelectorAll('[data-print]').forEach(b=>b.onclick=()=>window.print());</script><script src="experience.js"></script><script src="circuit.js"></script></body></html>
+

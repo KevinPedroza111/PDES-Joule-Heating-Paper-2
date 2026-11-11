@@ -1,0 +1,170 @@
+/* =====================================================================
+   CIRCUIT PAGE (schematic.html) - loaded after experience.css
+   ===================================================================== */
+.spec-strip{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 6px}
+.spec-chip{display:inline-flex;align-items:baseline;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow-sm);font-size:14px}
+.spec-chip b{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--blue)}
+.spec-chip.warn b{color:var(--heat)}
+
+/* ---------- Live circuit layout ---------- */
+.lab{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;margin-top:28px;align-items:start}
+.lab>.card,.ptx>.card,.tour>*{min-width:0}
+.lab>.card:last-child{display:grid;grid-template-columns:1fr 1fr 1.25fr}
+.lab>.card:last-child>.panel+.panel{border-top:0;border-left:1px solid var(--line)}
+.card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);box-shadow:var(--shadow-sm)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.card-head h3{margin:0;font-size:15px;font-weight:650;letter-spacing:-.01em}
+.card-head .tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.schem-wrap{overflow-x:auto;padding:8px 10px 0}
+#schem{display:block;width:100%;min-width:560px;height:auto;max-height:640px;margin:0 auto;user-select:none}
+.part-info{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;padding:16px 18px 18px;border-top:1px solid var(--line);min-height:118px}
+.part-info .pi-id{grid-row:span 3;display:grid;place-items:center;width:52px;height:52px;border-radius:12px;background:var(--grad-cool);color:#fff;font-family:var(--mono);font-weight:600;font-size:15px}
+.part-info h4{margin:2px 0 0;font-size:16.5px;font-weight:650}
+.part-info .pi-val{font-family:var(--mono);font-size:12px;color:var(--blue);letter-spacing:.03em}
+.part-info p{margin:4px 0 0;color:var(--muted);font-size:14.5px;line-height:1.6}
+.has-motion .part-info.swap{animation:detail-in .35s cubic-bezier(.2,.8,.2,1)}
+
+/* ---------- Controls + readouts ---------- */
+.panel{padding:18px}
+.panel+.panel{border-top:1px solid var(--line)}
+.panel h4{margin:0 0 12px;font-family:var(--mono);font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;padding:4px;gap:4px;border-radius:10px;background:var(--soft)}
+.seg button{flex:1;justify-content:center;padding:8px 10px;font-size:13px;box-shadow:none;border-color:transparent;background:transparent}
+.seg button:hover{transform:none;background:var(--surface)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.ctrl{margin-top:14px}
+.ctrl label{display:flex;justify-content:space-between;font-size:13.5px;font-weight:500;margin-bottom:6px}
+.ctrl label output{font-family:var(--mono);font-size:12.5px;color:var(--blue)}
+.ctrl input[type=range]{width:100%;accent-color:var(--blue)}
+.ctrl select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:14px}
+.check{display:flex;align-items:center;gap:9px;margin-top:14px;font-size:14px;font-weight:500}
+.check input{width:17px;height:17px;accent-color:var(--blue)}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ro{padding:12px 13px;border-radius:10px;border:1px solid var(--line);background:var(--paper);transition:border-color .3s,box-shadow .3s}
+.ro span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ro strong{display:block;margin-top:4px;font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.ro.live{border-color:color-mix(in srgb,var(--heat) 55%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--heat) 12%,transparent)}
+.status{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:13.5px;line-height:1.5;background:var(--soft);border:1px solid var(--line)}
+.status.ok{background:color-mix(in srgb,#16a34a 10%,var(--surface));border-color:color-mix(in srgb,#16a34a 40%,var(--line))}
+.status.low,.status.high{background:color-mix(in srgb,var(--heat-2) 12%,var(--surface));border-color:color-mix(in srgb,var(--heat-2) 45%,var(--line))}
+.status.over{background:color-mix(in srgb,#dc2626 12%,var(--surface));border-color:color-mix(in srgb,#dc2626 55%,var(--line))}
+.status b{font-weight:650}
+
+/* ---------- Oscilloscope ---------- */
+.scope{margin-top:20px}
+.scope canvas{display:block;width:100%;height:260px;border-radius:0 0 var(--radius) var(--radius);background:#0b1620}
+.scope-legend{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.scope-legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* ---------- Schematic drawing ---------- */
+#schem .wire{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s,opacity .35s}
+#schem .sym{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round;transition:stroke .35s,opacity .35s}
+#schem .fillsym{fill:var(--ink);transition:fill .35s}
+#schem .bodyfill{fill:var(--surface);stroke:var(--ink);stroke-width:2.4}
+#schem text{fill:var(--ink);font-family:var(--font);font-size:13px}
+#schem text.lbl{font-weight:700;font-size:14px}
+#schem text.sub{fill:var(--muted);font-size:12px}
+#schem text.pin{fill:var(--muted);font-size:12px;font-family:var(--mono)}
+#schem text.tp{fill:var(--blue);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+#schem .node{fill:var(--ink)}
+#schem .tpc{fill:var(--surface);stroke:var(--blue);stroke-width:2.2}
+#schem .part{cursor:pointer}
+#schem .part .hit{fill:transparent;stroke:none}
+#schem .part:hover .hit,#schem .part.sel .hit{fill:color-mix(in srgb,var(--blue) 9%,transparent);stroke:color-mix(in srgb,var(--blue) 45%,transparent);stroke-width:1.5;stroke-dasharray:5 4}
+#schem .flow{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .35s}
+#schem .flow.power{stroke:var(--blue)}
+#schem .flow.led{stroke:var(--heat)}
+#schem .flow.gate{stroke:var(--heat-2)}
+#schem.on-power .flow.power,#schem.on-led .flow.led,#schem.on-gate .flow.gate{opacity:.28}
+#schem .dot{r:4.2}
+#schem .dot.power{fill:var(--blue)}
+#schem .dot.led{fill:var(--heat);r:3.2}
+#schem #r1-heat{transition:opacity .2s}
+#schem #led-glow{opacity:0;transition:opacity .15s}
+#schem.on-led #led-glow{opacity:1}
+#schem #led-body{transition:fill .15s}
+#schem.on-led #led-body{fill:#ef4444}
+#schem .ray{opacity:.25;transition:opacity .15s}
+#schem.on-led .ray{opacity:1}
+#schem #ch-on{opacity:0;transition:opacity .2s}
+#schem.on-gate #ch-on{opacity:1}
+#schem .wave{fill:none;stroke:var(--ink);stroke-width:2}
+#schem #open-gap{opacity:0;transition:opacity .3s}
+#schem.disconnected #open-gap{opacity:1}
+#schem .vlabel{font-family:var(--mono);font-size:12px;font-weight:600}
+/* Guided path highlighting */
+#schem.focus .dim{opacity:.18}
+#schem.focus [data-path].keep{opacity:1}
+
+/* ---------- Guided tour ---------- */
+.tour{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:24px}
+.tour-nav{display:flex;flex-direction:column;gap:8px}
+.tour-nav button{justify-content:flex-start;text-align:left;width:100%}
+.tour-nav button small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:inherit;opacity:.7}
+.tour-body{padding:24px}
+.tour-body h3{margin:0 0 8px}
+.tour-body p{color:var(--muted)}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:16px 0 4px}
+.chain .node-chip{padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--soft);font-size:14px;font-weight:500}
+.chain .arr{color:var(--muted)}
+.has-motion .chain .node-chip{animation:node-in .45s cubic-bezier(.2,.8,.2,1) both}
+
+/* ---------- Component reference grid ---------- */
+.parts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-top:24px}
+.pcard{padding:22px;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:color-mix(in srgb,var(--blue) 35%,var(--line))}
+.pcard .pc-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.pcard .pc-id{display:grid;place-items:center;min-width:42px;height:42px;padding:0 8px;border-radius:11px;background:var(--soft);font-family:var(--mono);font-weight:600;font-size:13px;color:var(--blue)}
+.pcard h3{margin:0;font-size:17px}
+.pcard .pc-val{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.pcard p{color:var(--muted);font-size:14.5px;margin:8px 0 0}
+.pcard button{margin-top:14px;padding:8px 13px;font-size:13px}
+
+/* ---------- Operating cycle ---------- */
+.cycle-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.phase{padding:22px;border-left:4px solid var(--heat)}
+.phase.cool{border-left-color:var(--blue)}
+.phase h3{margin:0 0 6px}
+.phase p{color:var(--muted);margin:0}
+.duty-demo{margin-top:16px;padding:20px}
+.duty-bar{position:relative;display:flex;height:40px;border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:12px;font-weight:600}
+.duty-bar .h{display:grid;place-items:center;background:var(--grad-heat);color:#fff;transition:flex-basis .4s}
+.duty-bar .c{display:grid;place-items:center;flex:1;background:var(--grad-cool);color:#fff}
+.duty-bar .playhead{position:absolute;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 8px #fff;left:0}
+
+/* ---------- Checklist ---------- */
+.checklist{counter-reset:ck;list-style:none;padding:0;margin:20px 0 0;display:grid;gap:10px}
+.checklist li{counter-increment:ck;position:relative;padding:14px 16px 14px 58px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);box-shadow:var(--shadow-sm);margin:0;color:var(--ink)}
+.checklist li:before{content:counter(ck,decimal-leading-zero);position:absolute;left:14px;top:12px;width:32px;height:28px;display:grid;place-items:center;border-radius:8px;background:var(--soft);font-family:var(--mono);font-size:12px;font-weight:600;color:var(--blue)}
+.checklist li small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.group-label{margin:30px 0 0;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+
+/* ---------- Power-transfer chart ---------- */
+.ptx{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:20px;margin-top:22px;align-items:start}
+.ptx canvas{display:block;width:100%;height:300px}
+.ptx .panel p{color:var(--muted);font-size:14.5px}
+
+.pdf-link{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:18px;padding:16px 18px}
+.pdf-link p{margin:0;color:var(--muted);font-size:14px;flex:1;min-width:220px}
+
+@media(max-width:980px){
+  .lab,.ptx{grid-template-columns:1fr}
+  .lab>.card:last-child{grid-template-columns:1fr 1fr}
+  .lab>.card:last-child>.panel:last-child{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
+  .tour{grid-template-columns:1fr}
+  .tour-nav{flex-direction:row;flex-wrap:wrap}
+  .tour-nav button{width:auto}
+}
+@media(max-width:640px){
+  .lab>.card:last-child{grid-template-columns:1fr}
+  .lab>.card:last-child>.panel+.panel{border-left:0;border-top:1px solid var(--line)}
+  .cycle-row{grid-template-columns:1fr}
+  .readouts{grid-template-columns:1fr 1fr}
+  .scope canvas{height:220px}
+  .ptx canvas{height:240px}
+}
+@media print{
+  .lab{grid-template-columns:1fr}
+  .panel.ctrls,.scope,.tour-nav,.pcard button,#scope-card{display:none!important}
+  #schem .flow,#schem .dot{display:none}
+}
