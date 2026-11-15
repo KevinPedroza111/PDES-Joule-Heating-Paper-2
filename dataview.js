@@ -345,7 +345,7 @@ function renderDetails(t){
         .concat([[e.currentIsCalculated?'Current (calculated)':'Measured current',e.current_A!==undefined?fmtNum(e.current_A)+' A':'—']])
         .concat(e.circuitResistance_ohm!==undefined?[['Circuit resistance',fmtNum(e.circuitResistance_ohm)+' Ω']]:[['Liquid-metal resistance',e.liquidMetalResistance_ohm!==undefined?fmtNum(e.liquidMetalResistance_ohm)+' Ω':'—']])
       :[['Sweep range',t.settings.sweepStart_Hz+' → '+t.settings.sweepStop_Hz+' Hz'],['Sweep duration',t.settings.sweepDuration_s+' s'],['Ignored after LED start',t.settings.ignoredStart_s+' s'],['Direction','Low to high']]],
-    ['Sample',[['Stretched length L₀',fmtNum(s.stretchedLengthL0_mm)+' mm'],['Stretched width',fmtNum(s.stretchedWidth_mm,3)+' mm'],['Stretched thickness',s.stretchedThickness_mm+' mm'],['Hanging mass',s.hangingMass_g+' g'],['Tensile stress',fmtNum(s.tensileStress_MPa,3)+' MPa']]],
+    ['Sample',(s.unstretchedLength_mm!==undefined?[['Unstretched length L',fmtNum(s.unstretchedLength_mm)+' mm']]:[]).concat([['Stretched length L₀',fmtNum(s.stretchedLengthL0_mm)+' mm']],s.preStrain_pct!==undefined?[['Pre-strain',fmtNum(s.preStrain_pct)+' %']]:[],[['Stretched width',fmtNum(s.stretchedWidth_mm,3)+' mm'],['Stretched thickness',s.stretchedThickness_mm+' mm'],['Hanging mass',s.hangingMass_g+' g'],['Tensile stress',fmtNum(s.tensileStress_MPa,3)+' MPa']])],
     ['Video',[['Frame rate',fmtNum(v.frameRate_fps)+' fps'],['Video length',fmtNum(v.duration_s,1)+' s'],['Actuation start frame',v.startFrame],['Frames tracked',v.framesTracked.toLocaleString()]]]
   ];
   const mg=el('div','meta-groups');
