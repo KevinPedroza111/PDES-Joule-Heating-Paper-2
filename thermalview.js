@@ -50,7 +50,10 @@ function analyze(t){
   const start=mean(x[0],x[0]+1),end=mean(x[n-1]-1,x[n-1]);
   const half=start+(T[iPk]-start)/2;let above=0,hotSum=0;
   for(let i=0;i<n;i++)if(T[i]>=half){above++;hotSum+=T[i];}
-  return {T,x,n,dur,fps,avg1,rate,iPk,iPkA,iLow,iUp,iDown,start,end,half,
+  // Several frames at exactly the maximum = the camera hit the top of its measuring range
+  let atMax=0;for(let i=0;i<n;i++)if(T[i]>=T[iPk]-0.01)atMax++;
+  const clipped=atMax>=3;
+  return {T,x,n,dur,fps,avg1,rate,iPk,iPkA,iLow,iUp,iDown,start,end,half,clipped,clipTime:atMax/fps,
     peak:T[iPk],peakAvg:avg1[iPkA],low:T[iLow],rise:T[iPk]-start,
     timeAbove:above/fps,meanHot:above?hotSum/above:NaN,maxUp:rate[iUp],maxDown:rate[iDown]};
 }
@@ -58,22 +61,25 @@ const tests=D.tests.map(t=>({...t,s:analyze(t)}));
 
 function summaryText(t){
   const s=t.s;
+  if(s.clipped)return 'Starting at '+fmtC(s.start)+', the hottest point in the measured area reached the camera\'s upper limit of '+fmtC(s.peak)+' at '+fmtNum(s.x[s.iPk])+' s (frame '+t.frame[s.iPk]+') and stayed there for '+fmtNum(s.clipTime)+' s, so the real peak was higher than the camera could measure. '
+    +'It heated as fast as '+fmtNum(s.maxUp)+' °C/s and was at '+fmtC(s.end)+' when the recording ended.';
   return 'Starting at '+fmtC(s.start)+', the hottest point in the measured area reached '+fmtC(s.peak)+' at '+fmtNum(s.x[s.iPk])+' s (frame '+t.frame[s.iPk]+'), '+fmtNum(s.rise)+' °C above where it started. '
     +'It spent '+fmtNum(s.timeAbove)+' s above '+fmtC(s.half)+' (halfway to the peak), heated as fast as '+fmtNum(s.maxUp)+' °C/s, and was at '+fmtC(s.end)+' when the recording ended.';
 }
 function statsRows(t){
   const s=t.s;
   return [
-    ['Peak temperature',fmtC(s.peak),'at '+fmtNum(s.x[s.iPk])+' s · frame '+t.frame[s.iPk]],
-    ['Peak 1 s average',fmtC(s.peakAvg),'ignores single-frame spikes'],
+    s.clipped?['Peak temperature','≥ '+fmtC(s.peak),'camera limit, first reached at '+fmtNum(s.x[s.iPk])+' s · frame '+t.frame[s.iPk]]:['Peak temperature',fmtC(s.peak),'at '+fmtNum(s.x[s.iPk])+' s · frame '+t.frame[s.iPk]],
+    ['Peak 1 s average',(s.clipped&&s.peakAvg>=s.peak-0.01?'≥ ':'')+fmtC(s.peakAvg),'ignores single-frame spikes'],
     ['Starting temperature',fmtC(s.start),'average of the first second'],
-    ['Rise above start',fmtNum(s.rise)+' °C','peak minus starting temperature'],
+    ['Rise above start',(s.clipped?'≥ ':'')+fmtNum(s.rise)+' °C','peak minus starting temperature'],
     ['Time above '+fmtC(s.half),fmtNum(s.timeAbove)+' s','halfway between start and peak'],
     ['Average while above it',fmtC(s.meanHot),'mean of those frames'],
     ['Fastest heating',fmtNum(s.maxUp)+' °C/s','at '+fmtNum(s.x[s.iUp])+' s'],
     ['Fastest cooling',fmtNum(Math.abs(s.maxDown))+' °C/s','at '+fmtNum(s.x[s.iDown])+' s'],
     ['Lowest temperature',fmtC(s.low),'at '+fmtNum(s.x[s.iLow])+' s'],
     ['Ending temperature',fmtC(s.end),'average of the last second'],
+    ['Time at the camera limit',s.clipped?fmtNum(s.clipTime)+' s':'none',s.clipped?'readings stuck at '+fmtC(s.peak):'never reached the top of its range'],
   ];
 }
 
@@ -287,7 +293,7 @@ function render(i){
   const st=el('button','button','Download stats (CSV)');st.type='button';
   st.onclick=()=>downloadCSV(fileBaseOf(t)+'_temperature_stats',['Stat','Value','Detail'],statsRows(t));
   actions.append(all,orig,st);card.append(actions);
-  const notes=(t.notes||[]).concat(['Each value is the '+(t.statistic==='max'?'hottest':t.statistic)+' reading inside '+t.region+', the rectangle drawn over the sample in the thermal camera software, recorded at '+fmtNum(s.fps,1)+' frames per second. Absolute temperatures depend on the emissivity set in that software.']);
+  const notes=(t.notes||[]).concat(s.clipped?['The camera reached the top of its measuring range: '+fmtNum(s.clipTime)+' s of frames read exactly '+fmtC(s.peak,2)+'. The sample was at least that hot, and probably hotter, during those frames, so the peak, the rise and the halfway-based stats are lower limits. A higher camera temperature range would capture the true peak.']:[]).concat(['Each value is the '+(t.statistic==='max'?'hottest':t.statistic)+' reading inside '+t.region+', the rectangle drawn over the sample in the thermal camera software, recorded at '+fmtNum(s.fps,1)+' frames per second. Absolute temperatures depend on the emissivity set in that software.']);
   card.append(el('h4','notes-title','Things to know about this recording'));
   const dn=el('div','data-notes');notes.forEach(n=>{const d=el('div','data-note');d.append(el('b',null,'!'),el('span',null,n));dn.append(d);});card.append(dn);
   detail.append(card);
@@ -298,11 +304,11 @@ function render(i){
   const peakWin=Math.max(3,s.dur*0.06);
   addGraph(detail,{title:'Temperature over time',fileBase:fileBaseOf(t),footer:footerOf(t),
     sub:'The hottest reading in the measured area for every camera frame. The orange line is a 1 s moving average, which shows the overall trend under the fast heating cycles. Zoom in to see individual frames.',
-    legend:[{label:'Every frame',color:'--series-1'},{label:'1 s average',color:'--series-2'},{label:'Peak '+fmtC(s.peak),color:'--series-3',marker:true}],
+    legend:[{label:'Every frame',color:'--series-1'},{label:'1 s average',color:'--series-2'},{label:(s.clipped?'Camera limit ':'Peak ')+fmtC(s.peak),color:'--series-3',marker:true}],
     tools:[{label:'Zoom to peak',onClick:(b,ch)=>ch.setZoom([Math.max(s.x[0],s.x[s.iPk]-peakWin),Math.min(s.x[s.n-1],s.x[s.iPk]+peakWin)])}],
     csv:{headers:['Frame','Time (s)','Temperature (°C)','1 s average (°C)'],rows:()=>t.frame.map((f,i)=>[f,s.x[i],s.T[i],s.avg1[i]])},
     chart:{xLabel:'Time since the recording started (s)',yLabel:'Temperature (°C)',minSpan:0.5,
-      hlines:[{y:s.start,label:'start '+fmtC(s.start)}],
+      hlines:[{y:s.start,label:'start '+fmtC(s.start)}].concat(s.clipped?[{y:s.peak,label:'camera limit '+fmtC(s.peak)}]:[]),
       series:[{label:'Every frame',color:'--series-1',x:s.x,y:s.T,width:1.2,dots:true},{label:'1 s average',color:'--series-2',x:s.x,y:s.avg1,width:2.2},{kind:'points',color:'--series-3',x:[s.x[s.iPk]],y:[s.peak],size:6}],
       tooltip:i=>({head:fmtNum(s.x[i],3)+' s · frame '+t.frame[i]+' · '+clockAt(t,s.x[i]),items:[{label:'Temperature',value:fmtC(s.T[i],2),color:'--series-1'},{label:'1 s average',value:fmtC(s.avg1[i],2),color:'--series-2'},{label:'Above start',value:fmtNum(s.T[i]-s.start)+' °C'}]})}});
 
@@ -324,7 +330,7 @@ function render(i){
    ===================================================================== */
 tests.forEach((t,i)=>{
   const b=el('button');b.type='button';
-  b.append(el('b',null,t.title),el('span',null,'Peak '+fmtC(t.s.peak)+' · '+fmtDate(t.recordedDate)));
+  b.append(el('b',null,t.title),el('span',null,'Peak '+(t.s.clipped?'≥ ':'')+fmtC(t.s.peak)+' · '+fmtDate(t.recordedDate)));
   b.onclick=()=>render(i);tabs.append(b);
 });
 
