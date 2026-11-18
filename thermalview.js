@@ -51,8 +51,9 @@ function analyze(t){
   const half=start+(T[iPk]-start)/2;let above=0,hotSum=0;
   for(let i=0;i<n;i++)if(T[i]>=half){above++;hotSum+=T[i];}
   // Several frames at exactly the maximum = the camera hit the top of its measuring range
-  let atMax=0;for(let i=0;i<n;i++)if(T[i]>=T[iPk]-0.01)atMax++;
-  const clipped=atMax>=3;
+  // A long flat run at the maximum = clipped; a few tied frames at a modest peak are not
+  let atMax=0,run=0,longest=0;for(let i=0;i<n;i++){if(T[i]>=T[iPk]-0.01){atMax++;run++;if(run>longest)longest=run;}else run=0;}
+  const clipped=longest>=Math.max(5,Math.round(fps*0.25));
   return {T,x,n,dur,fps,avg1,rate,iPk,iPkA,iLow,iUp,iDown,start,end,half,clipped,clipTime:atMax/fps,
     peak:T[iPk],peakAvg:avg1[iPkA],low:T[iLow],rise:T[iPk]-start,
     timeAbove:above/fps,meanHot:above?hotSum/above:NaN,maxUp:rate[iUp],maxDown:rate[iDown]};
@@ -269,7 +270,7 @@ function addGraph(parent,{title,sub,legend,tools,csv,fileBase,footer,chart:opts}
    ONE RECORDING
    ===================================================================== */
 const fileBaseOf=t=>slug(t.id)+'_'+t.recordedDate;
-const footerOf=t=>t.title+' · thermal camera, '+t.recording+' ('+t.region+', '+(isMean(t)?'average':t.statistic)+') · recorded '+fmtDate(t.recordedDate);
+const footerOf=t=>t.title+' · thermal camera, '+(t.video||t.recording)+' ('+t.region+', '+(isMean(t)?'average':t.statistic)+') · recorded '+fmtDate(t.recordedDate);
 function allPointsCSV(t){
   const s=t.s;
   downloadCSV(fileBaseOf(t)+'_temperature_all_points',
@@ -286,7 +287,7 @@ function render(i){
   // header card with stats
   const card=el('div','card test-head');
   card.append(el('div','eyebrow','Thermal camera · drive '+t.drive),el('h2',null,t.title),el('p','summary-line',summaryText(t)));
-  card.append(el('div','file','Recording: '+t.recording+' · '+t.region+' ('+(isMean(t)?'average':t.statistic)+' temperature in the region) · recorded '+fmtDate(t.recordedDate)+' at '+t.startClock+(t.sample?' · '+t.sample:'')));
+  card.append(el('div','file','Thermal video: '+(t.video||t.recording)+' · '+t.region+' ('+(isMean(t)?'average':t.statistic)+' temperature in the region) · recorded '+fmtDate(t.recordedDate)+' at '+t.startClock+(t.sample?' · '+t.sample:'')));
   const stats=el('div','stat-row');
   statsRows(t).forEach(([k,v,sm])=>{const d=el('div','stat');d.append(el('span',null,k),el('strong',null,v),el('small',null,sm));stats.append(d);});
   card.append(stats);
